@@ -1,3 +1,35 @@
 rootProject.name = "rskj"
 include "rskj-core"
 
+buildscript {
+    dependencies {
+        classpath('com.github.vlsi.gradle:checksum-dependency-plugin:1.20.0')
+    }
+    repositories {
+        gradlePluginPortal()
+    }
+}
+
+def expectedSha512 = '9C5581EAF60573609A81EE2293433D1820390D163955D8964B795C720D4C342550EA41AD836825D70D69946BB20566A60E5F51FB3BC9B124484E43575764D133'
+
+static def sha512(File file) {
+    def md = java.security.MessageDigest.getInstance('SHA-512')
+    file.eachByte(8192) { buffer, length ->
+        md.update(buffer, 0, length)
+    }
+    new BigInteger(1, md.digest()).toString(16).toUpperCase()
+}
+
+def checksumDependencyJar = buildscript.configurations.classpath.resolve().first()
+def actualSha512 = sha512(checksumDependencyJar)
+if (actualSha512 != expectedSha512) {
+    throw GradleException(
+            """
+    Checksum mismatch for $checksumDependencyJar
+    Expected: $expectedSha512
+      Actual: $actualSha512
+    """.stripIndent()
+    )
+}
+
+apply plugin: 'com.github.vlsi.checksum-dependency'
