@@ -1010,7 +1010,8 @@ public class RskContext implements NodeBootstrapper {
                 rskSystemProperties.getMaxSkeletonChunks(),
                 rskSystemProperties.getChunkSize(),
                 rskSystemProperties.getMaxRequestedBodies(),
-                rskSystemProperties.getLongSyncLimit());
+                rskSystemProperties.getLongSyncLimit(),
+                rskSystemProperties.getAlternativeSync());
     }
 
     protected StateRootHandler buildStateRootHandler() {
@@ -1403,21 +1404,32 @@ public class RskContext implements NodeBootstrapper {
 
     private SyncProcessor getSyncProcessor() {
         if (syncProcessor == null) {
-            syncProcessor = new SyncProcessorImpl(
+            SyncConfiguration syncConfig = this.getSyncConfiguration();
+
+            if (syncConfig.getUseAlternative()) {
+                syncProcessor = new AlternativeSyncProcessorImpl(
                     getBlockchain(),
-                    getBlockStore(),
-                    getConsensusValidationMainchainView(),
-                    getBlockSyncService(),
-                    getSyncConfiguration(),
-                    getBlockFactory(),
-                    getProofOfWorkRule(),
-                    new SyncBlockValidatorRule(
-                            new BlockUnclesHashValidationRule(),
-                            new BlockRootValidationRule(getRskSystemProperties().getActivationConfig())
-                    ),
-                    getDifficultyCalculator(),
-                    getPeersInformation(),
-                    getGenesis());
+                    syncConfiguration,
+                    getPeersInformation()
+                );
+            }
+            else {
+                syncProcessor = new SyncProcessorImpl(
+                        getBlockchain(),
+                        getBlockStore(),
+                        getConsensusValidationMainchainView(),
+                        getBlockSyncService(),
+                        getSyncConfiguration(),
+                        getBlockFactory(),
+                        getProofOfWorkRule(),
+                        new SyncBlockValidatorRule(
+                                new BlockUnclesHashValidationRule(),
+                                new BlockRootValidationRule(getRskSystemProperties().getActivationConfig())
+                        ),
+                        getDifficultyCalculator(),
+                        getPeersInformation(),
+                        getGenesis());
+            }
         }
 
         return syncProcessor;
