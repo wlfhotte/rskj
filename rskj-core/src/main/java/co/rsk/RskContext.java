@@ -1410,7 +1410,8 @@ public class RskContext implements NodeBootstrapper {
                 syncProcessor = new AlternativeSyncProcessorImpl(
                     getBlockchain(),
                     syncConfiguration,
-                    getPeersInformation()
+                    getPeersInformation(),
+                    getBlockNodeInformation()
                 );
             }
             else {
