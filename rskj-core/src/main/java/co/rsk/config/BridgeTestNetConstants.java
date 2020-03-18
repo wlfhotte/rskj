@@ -60,7 +60,7 @@ public class BridgeTestNetConstants extends BridgeConstants {
                 getBtcParams()
         );
 
-        btc2RskMinimumAcceptableConfirmations = 10;
+        btc2RskMinimumAcceptableConfirmations = 3;
         btc2RskMinimumAcceptableConfirmationsOnRsk = 10;
         rsk2BtcMinimumAcceptableConfirmations = 10;
 
@@ -68,14 +68,14 @@ public class BridgeTestNetConstants extends BridgeConstants {
 
         maxBtcHeadersPerRskBlock = 500;
 
-        minimumLockTxValue = Coin.valueOf(1000000);
-        minimumReleaseTxValue = Coin.valueOf(500000);
+        minimumLockTxValue = Coin.valueOf(1_000_000); // 0.1 tBTC
+        minimumReleaseTxValue = Coin.valueOf(500_000); // 0.05 tBTC
 
         // Passphrases are kept private
         List<ECKey> federationChangeAuthorizedKeys = Arrays.stream(new String[]{
-                "04d9052c2022f6f35da53f04f02856ff5e59f9836eec03daad0328d12c5c66140205da540498e46cd05bf63c1201382dd84c100f0d52a10654159965aea452c3f2",
-                "04bf889f2035c8c441d7d1054b6a449742edd04d202f44a29348b4140b34e2a81ce66e388f40046636fd012bd7e3cecd9b951ffe28422334722d20a1cf6c7926fb",
-                "047e707e4f67655c40c539363fb435d89574b8fe400971ba0290de9c2adbb2bd4e1e5b35a2188b9409ff2cc102292616efc113623483056bb8d8a02bf7695670ea"
+                "04fe0881821ea20b7a7ae69429e05a6baeda2460778ab6b24b51fc92ff69656fa5033b8789505df7f25477a89042554bfbd0834364592bd0ae18ee1a1d5d87b758", // seed: fed-01
+                "04394f1ecdc50498b8e5d4beba3f3612e97c74e56e5f90426df74b2fc074ecbde892f85de7b7dedbcd142c3178485432032fdaf890bc687e5bdb870010a401bf27", // seed: fed-02
+                "04a2acc68ec45a1cde42508b26dda8b67843c346fcc2b33866d806fb82c5642b2bcadb46430e1d52b1fbe462383199dc756807fb27e05887e97cd67fe9d84baf06"  // seed: fed-03
         }).map(hex -> ECKey.fromPublicOnly(Hex.decode(hex))).collect(Collectors.toList());
 
         federationChangeAuthorizer = new AddressBasedAuthorizer(
@@ -83,9 +83,8 @@ public class BridgeTestNetConstants extends BridgeConstants {
                 AddressBasedAuthorizer.MinimumRequiredCalculation.MAJORITY
         );
 
-        // Passphrases are kept private
         List<ECKey> lockWhitelistAuthorizedKeys = Arrays.stream(new String[]{
-                "04bf7e3bca7f7c58326382ed9c2516a8773c21f1b806984bb1c5c33bd18046502d97b28c0ea5b16433fbb2b23f14e95b36209f304841e814017f1ede1ecbdcfce3"
+                "0496aebf9a84b1081c2551cb167b99d0d29e3afd8c41559c4f8fef48c64d802a7f7bb86009ca2fce169ae6101d7a3ef1f5b98712dcd15cebb3e2a6315c8886e07a" // seed: whitelist-authorizer
         }).map(hex -> ECKey.fromPublicOnly(Hex.decode(hex))).collect(Collectors.toList());
 
         lockWhitelistChangeAuthorizer = new AddressBasedAuthorizer(
@@ -93,15 +92,15 @@ public class BridgeTestNetConstants extends BridgeConstants {
                 AddressBasedAuthorizer.MinimumRequiredCalculation.ONE
         );
 
-        federationActivationAge = 60L;
+        federationActivationAge = 20L;
 
-        fundsMigrationAgeSinceActivationBegin = 60L;
-        fundsMigrationAgeSinceActivationEnd = 900L;
+        fundsMigrationAgeSinceActivationBegin = 20L;
+        fundsMigrationAgeSinceActivationEnd = 60L;
 
         List<ECKey> feePerKbAuthorizedKeys = Arrays.stream(new String[]{
-                "04701d1d27f8c2ae97912d96fb1f82f10c2395fd320e7a869049268c6b53d2060dfb2e22e3248955332d88cd2ae29a398f8f3858e48dd6d8ffbc37dfd6d1aa4934",
-                "045ef89e4a5645dc68895dbc33b4c966c3a0a52bb837ecdd2ba448604c4f47266456d1191420e1d32bbe8741f8315fde4d1440908d400e5998dbed6549d499559b",
-                "0455db9b3867c14e84a6f58bd2165f13bfdba0703cb84ea85788373a6a109f3717e40483aa1f8ef947f435ccdf10e530dd8b3025aa2d4a7014f12180ee3a301d27"
+                "0497f41f14a77f88f6d09434fcf56bd8f66716deaa4c29127d54531fbc3b4c0a67657c9a9c72dbc91c710f350d787ea0574e96d9252f3862d27634b0759582a109", // seed: feeperkb-authorizer-01
+                "04243180c9b18571440db278448a8882fdab39c0a002ca480937cce4fc4620253e67997c89cb9ca7804a3cbaed4e65e9391c8f466c2a98bb92e8a966d45101462c", // seed: feeperkb-authorizer-02
+                "04dcb3132beafe8fbfa28a3e417c44a406263b09be9b706e300beced21d0c3bae94369dcca7edcbcf862313d3850d7e2d03afdaaebc8e29e52a021634e32ee792f"  // seed: feeperkb-authorizer-03
         }).map(hex -> ECKey.fromPublicOnly(Hex.decode(hex))).collect(Collectors.toList());
 
         feePerKbChangeAuthorizer = new AddressBasedAuthorizer(
@@ -114,9 +113,7 @@ public class BridgeTestNetConstants extends BridgeConstants {
         maxFeePerKb = Coin.valueOf(5_000_000L);
 
         List<ECKey> increaseLockingCapAuthorizedKeys = Arrays.stream(new String[]{
-                "04701d1d27f8c2ae97912d96fb1f82f10c2395fd320e7a869049268c6b53d2060dfb2e22e3248955332d88cd2ae29a398f8f3858e48dd6d8ffbc37dfd6d1aa4934",
-                "045ef89e4a5645dc68895dbc33b4c966c3a0a52bb837ecdd2ba448604c4f47266456d1191420e1d32bbe8741f8315fde4d1440908d400e5998dbed6549d499559b",
-                "0455db9b3867c14e84a6f58bd2165f13bfdba0703cb84ea85788373a6a109f3717e40483aa1f8ef947f435ccdf10e530dd8b3025aa2d4a7014f12180ee3a301d27"
+                "0415e032ab84a670d848f80620efb6c9b2a3d8a9159fd17adc780e0ae1da8785a485f5e4c5d9eead55008695884970484e85942872e289ed42f75fbcdc7c8eac8b" // seed: lockingcap-authorizer
         }).map(hex -> ECKey.fromPublicOnly(Hex.decode(hex))).collect(Collectors.toList());
 
         increaseLockingCapAuthorizer = new AddressBasedAuthorizer(
@@ -125,7 +122,7 @@ public class BridgeTestNetConstants extends BridgeConstants {
         );
 
         lockingCapIncrementsMultiplier = 2;
-        initialLockingCap = Coin.COIN.multiply(200); // 200 BTC
+        initialLockingCap = Coin.COIN.multiply(950); // 950 tBTC
     }
 
     public static BridgeTestNetConstants getInstance() {
