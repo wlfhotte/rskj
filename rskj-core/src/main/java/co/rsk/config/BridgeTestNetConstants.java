@@ -38,10 +38,10 @@ public class BridgeTestNetConstants extends BridgeConstants {
     BridgeTestNetConstants() {
         btcParamsString = NetworkParameters.ID_TESTNET;
 
-        BtcECKey federator0PublicKey = BtcECKey.fromPublicOnly(Hex.decode("039a060badbeb24bee49eb2063f616c0f0f0765d4ca646b20a88ce828f259fcdb9"));
-        BtcECKey federator1PublicKey = BtcECKey.fromPublicOnly(Hex.decode("02afc230c2d355b1a577682b07bc2646041b5d0177af0f98395a46018da699b6da"));
-        BtcECKey federator2PublicKey = BtcECKey.fromPublicOnly(Hex.decode("0344a3c38cd59afcba3edcebe143e025574594b001700dec41e59409bdbd0f2a09"));
-        BtcECKey federator3PublicKey = BtcECKey.fromPublicOnly(Hex.decode("034844a99cd7028aa319476674cc381df006628be71bc5593b8b5fdb32bb42ef85"));
+        BtcECKey federator0PublicKey = BtcECKey.fromPublicOnly(Hex.decode("02fe0881821ea20b7a7ae69429e05a6baeda2460778ab6b24b51fc92ff69656fa5")); // seed: fed-01
+        BtcECKey federator1PublicKey = BtcECKey.fromPublicOnly(Hex.decode("03394f1ecdc50498b8e5d4beba3f3612e97c74e56e5f90426df74b2fc074ecbde8")); // seed: fed-02
+        BtcECKey federator2PublicKey = BtcECKey.fromPublicOnly(Hex.decode("02a2acc68ec45a1cde42508b26dda8b67843c346fcc2b33866d806fb82c5642b2b")); // seed: fed-03
+        BtcECKey federator3PublicKey = BtcECKey.fromPublicOnly(Hex.decode("033c29959b63af6ceaf7761943b1262a9812e2130b111638b8903ec30cec36d27c")); // seed: fed-04
 
         List<BtcECKey> genesisFederationPublicKeys = Arrays.asList(federator0PublicKey, federator1PublicKey, federator2PublicKey, federator3PublicKey);
 
